@@ -14,6 +14,7 @@ from logging import Formatter, FileHandler
 from flask_wtf import Form
 from forms import *
 import sys
+from flask_migrate import Migrate
 #--------------------------------------------------------------------------#
 # App Config.
 #----------------------------------------------------------------------------#
@@ -22,7 +23,7 @@ app = Flask(__name__)
 moment = Moment(app)
 app.config.from_object('config')
 db = SQLAlchemy(app)
-
+migrate = Migrate(app, db)
 # TODO: connect to a local postgresql database
 
 #----------------------------------------------------------------------------#
@@ -336,7 +337,7 @@ def create_venue_submission():
     seeking_talent = True if 'seeking_talent' in request.form else False
     seeking_description = request.form['seeking_description']
     venue = Venue(name=name, city=city, state=state, address=address, phone=phone, genres=genres,
-                  facebook_link=facebook_link, image_link=image_link, website=website, seeking_talent=seeking_talent,
+                  facebook_link=facebook_link, image_link=image_link,website=website,  seeking_talent=seeking_talent,
                   seeking_description=seeking_description)
     db.session.add(venue)
     db.session.commit()
